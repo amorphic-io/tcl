@@ -11,6 +11,8 @@
  */
 
 #include "tclInt.h"
+#include "tclBazelDefaultPaths.h"
+
 
 /*
  * Internal structure to hold embedded configuration information.
@@ -130,8 +132,9 @@ Tcl_RegisterConfig(
      */
 
     for (cfg=configuration ; cfg->key!=NULL && cfg->key[0]!='\0' ; cfg++) {
+        const char *const value = remapTclPkgConfig(cfg->key, cfg->value);
 	Tcl_DictObjPut(interp, pkgDict, Tcl_NewStringObj(cfg->key, -1),
-		Tcl_NewByteArrayObj((unsigned char *)cfg->value, strlen(cfg->value)));
+		Tcl_NewByteArrayObj((unsigned char *)value, strlen(value)));
     }
 
     /*

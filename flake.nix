@@ -33,6 +33,7 @@
               # For buildifier, buildozer.
               bazel-buildtools
               bant
+              gdb
             ];
 
             shellHook = ''

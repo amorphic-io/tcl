@@ -9,6 +9,7 @@
  */
 
 #include "tclInt.h"
+#include "tclBazelDefaultPaths.h"
 #include <stddef.h>
 #include <locale.h>
 #ifdef HAVE_LANGINFO
@@ -98,7 +99,7 @@ typedef struct {
  * defined by Makefile.
  */
 
-static char defaultLibraryDir[sizeof(TCL_LIBRARY)+200] = TCL_LIBRARY;
+// static char defaultLibraryDir[sizeof(TCL_LIBRARY)+200] = TCL_LIBRARY;
 
 /*
  * Directory in which to look for packages (each package is typically
@@ -106,7 +107,7 @@ static char defaultLibraryDir[sizeof(TCL_LIBRARY)+200] = TCL_LIBRARY;
  * Makefile.
  */
 
-static char pkgPath[sizeof(TCL_PACKAGE_PATH)+200] = TCL_PACKAGE_PATH;
+// static char pkgPath[sizeof(TCL_PACKAGE_PATH)+200] = TCL_PACKAGE_PATH;
 
 /*
  * The following table is used to map from Unix locale strings to encoding
@@ -539,8 +540,7 @@ TclpInitLibraryPath(
 	    /*
 	     * TODO: Pull this value from the TIP 59 table.
 	     */
-
-	    str = defaultLibraryDir;
+	    str = getDefaultLibraryDir();
 	}
 	if (str[0] != '\0') {
 	    objPtr = Tcl_NewStringObj(str, -1);
@@ -867,12 +867,12 @@ TclpSetVariables(
 		CFRelease(frameworksURL);
 	    }
 	}
-	Tcl_SetVar(interp, "tcl_pkgPath", pkgPath,
+	Tcl_SetVar(interp, "tcl_pkgPath", getDefaultPkgPath(),
 		TCL_GLOBAL_ONLY | TCL_APPEND_VALUE);
     } else
 #endif /* HAVE_COREFOUNDATION */
     {
-	Tcl_SetVar(interp, "tcl_pkgPath", pkgPath, TCL_GLOBAL_ONLY);
+	Tcl_SetVar(interp, "tcl_pkgPath", getDefaultPkgPath(), TCL_GLOBAL_ONLY);
     }
 
 #ifdef DJGPP

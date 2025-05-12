@@ -119,6 +119,26 @@ filegroup(
     visibility = ["//visibility:private"],
 )
 
+cc_library(
+    name = "tclUnixBazelDefaultPaths",
+    srcs = [
+        "unix/tclBazelDefaultPaths.cc",
+    ],
+    hdrs = [
+        "unix/tclBazelDefaultPaths.h",
+    ],
+    copts = [
+        "-Iunix",
+    ],
+    deps = [
+        "@rules_cc//cc/runfiles",
+        "@bazel_tools//tools/cpp/runfiles",
+    ],
+    data = [
+        ":tcl_library_internal",
+    ],
+)
+
 # tclUnixInit uses additional define
 cc_library(
     name = "tclUnixInit",
@@ -135,12 +155,12 @@ cc_library(
         "generic/*.h",
         "unix/*.h",
     ]),
-    data = [
-        ":tcl_library_internal",
+    deps = [
+        ":tclUnixBazelDefaultPaths",
     ],
     copts = TCL_COPTS + [
-        "-DTCL_LIBRARY=\\\"external/tk_tcl/library\\\"",
-        "-DTCL_PACKAGE_PATH=\\\"external/tk_tcl\\\"",
+        "-DTCL_LIBRARY=\\\"__NONEXISTENT__\\\"",
+        "-DTCL_PACKAGE_PATH=\\\"__NONEXISTENT__\\\"",
     ],
     includes = ["generic", "unix"],
 )
@@ -157,25 +177,25 @@ cc_library(
         "unix/*.h",
     ]),
     copts = [
-        "-DCFG_INSTALL_LIBDIR='\"this_LIBDIR_does_not_exist\"'",
-        "-DCFG_INSTALL_BINDIR='\"this_BINDIR_does_not_exist\"'",
-        "-DCFG_INSTALL_DOCDIR='\"this_DOCDIR_does_not_exist\"'",
-        "-DCFG_INSTALL_INCDIR='\"this_INCDIR_does_not_exist\"'",
-        "-DCFG_INSTALL_SCRDIR='\"external/tk_tcl/library\"'",
-        "-DCFG_RUNTIME_LIBDIR='\"this_LIBDIR_does_not_exist\"'",
-        "-DCFG_RUNTIME_BINDIR='\"this_BINDIR_does_not_exist\"'",
-        "-DCFG_RUNTIME_DOCDIR='\"this_DOCDIR_does_not_exist\"'",
-        "-DCFG_RUNTIME_INCDIR='\"this_INCDIR_does_not_exist\"'",
-        "-DCFG_RUNTIME_SCRDIR='\"external/tk_tcl/library\"'",
-        "-DTCL_CFGVAL_ENCODING='\"ascii\"'",
-    ],
-    data = [
-        ":tcl_library_internal",
+        "-DCFG_INSTALL_LIBDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_INSTALL_BINDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_INSTALL_DOCDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_INSTALL_INCDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_INSTALL_SCRDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_RUNTIME_LIBDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_RUNTIME_BINDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_RUNTIME_DOCDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_RUNTIME_INCDIR='\"__NONEXISTENT__\"'",
+        "-DCFG_RUNTIME_SCRDIR='\"__NONEXISTENT__\"'",
+        "-DTCL_CFGVAL_ENCODING='\"utf-8\"'",
     ],
     includes = [
         "generic/",
         "unix/",
     ],
+    deps = [
+        ":tclUnixBazelDefaultPaths",
+    ]
 )
 
 # This is the libtcl
