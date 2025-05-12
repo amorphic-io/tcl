@@ -5,11 +5,11 @@
 #include <memory>
 #include <string>
 
-#include "rules_cc/cc/runfiles/runfiles.h"
+#include "tools/cpp/runfiles/runfiles.h"
 
 namespace {
 
-using rules_cc::cc::runfiles::Runfiles;
+using ::bazel::tools::cpp::runfiles::Runfiles;
 
 std::string GetExePath() {
   char result[PATH_MAX];
@@ -29,7 +29,7 @@ std::string Parent(std::string path) {
 std::string FindLibraryDirFromFilePath(std::string target) {
   std::string error;
   auto runfiles =
-      std::unique_ptr<Runfiles>(Runfiles::Create(GetExePath(), &error));
+      std::unique_ptr<Runfiles>(Runfiles::Create(GetExePath(), BAZEL_CURRENT_REPOSITORY, &error));
   if (runfiles == nullptr) {
     fprintf(stderr, "Failed to create Runfiles object: %s\n", error.c_str());
     abort();

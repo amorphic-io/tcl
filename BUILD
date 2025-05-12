@@ -131,7 +131,6 @@ cc_library(
         "-Iunix",
     ],
     deps = [
-        "@rules_cc//cc/runfiles",
         "@bazel_tools//tools/cpp/runfiles",
     ],
     data = [
